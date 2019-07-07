@@ -12,7 +12,7 @@ public class CountOfSubsetSum_SlidingWindow {
 		System.out.println(slidingWindow.countSubsets(arr, n));
 	}
 
-	static int countSubsets(int[] num, int sum) {
+	public int countSubsets(int[] num, int sum) {
 		int n = num.length;
 		int [] dp = new int[sum+1];
 
