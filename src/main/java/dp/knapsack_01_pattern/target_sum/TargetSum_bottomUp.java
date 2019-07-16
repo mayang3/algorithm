@@ -1,6 +1,6 @@
-package dp.knapsack_pattern.target_sum;
+package dp.knapsack_01_pattern.target_sum;
 
-import dp.knapsack_pattern.count_of_subset_sum.CountOfSubsetSum_SlidingWindow;
+import dp.knapsack_01_pattern.count_of_subset_sum.CountOfSubsetSum_SlidingWindow;
 
 /**
  * @author neo82

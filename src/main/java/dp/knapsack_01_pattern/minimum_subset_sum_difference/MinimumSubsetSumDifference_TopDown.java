@@ -1,4 +1,4 @@
-package dp.knapsack_pattern.minimum_subset_sum_difference;
+package dp.knapsack_01_pattern.minimum_subset_sum_difference;
 
 public class MinimumSubsetSumDifference_TopDown {
 

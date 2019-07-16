@@ -1,4 +1,4 @@
-package dp.knapsack_pattern.count_of_subset_sum;
+package dp.knapsack_01_pattern.count_of_subset_sum;
 
 /**
  * @author neo82

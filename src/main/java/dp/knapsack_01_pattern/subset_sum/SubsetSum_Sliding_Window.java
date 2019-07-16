@@ -1,4 +1,4 @@
-package dp.knapsack_pattern.subset_sum;
+package dp.knapsack_01_pattern.subset_sum;
 
 /**
  * @author baejunbeom

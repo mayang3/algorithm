@@ -1,4 +1,4 @@
-package dp.knapsack_pattern.equal_subset_sum_partition;
+package dp.knapsack_01_pattern.equal_subset_sum_partition;
 
 @SuppressWarnings("Duplicates")
 public class PartitionSet_BottomUp {
