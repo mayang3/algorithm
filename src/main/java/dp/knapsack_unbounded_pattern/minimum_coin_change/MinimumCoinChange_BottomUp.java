@@ -6,7 +6,7 @@ public class MinimumCoinChange_BottomUp {
 		int [][] dp = new int[n][total+1];
 
 		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < total; j++) {
+			for (int j = 0; j <= total; j++) {
 				dp[i][j] = Integer.MAX_VALUE;
 			}
 		}
