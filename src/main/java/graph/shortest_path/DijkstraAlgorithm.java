@@ -73,7 +73,7 @@ public class DijkstraAlgorithm {
 				int here = herePair.v;
 				int cost = herePair.cost;
 
-				// 현재 정점이 앞에서 이미 처리되서, 현재의 ocst 보다 적은 값을 가지고 있는 경우
+				// 현재 정점이 앞에서 이미 처리되서, 현재의 cost 보다 적은 값을 가지고 있는 경우
 				// 이미 pq 에 정점이 들어갔는데, 이후에 더 짧은 경로가 발견되는 경우가 있을 수 있다.
 				// 즉, 이 조건을 탄다는 것은 현재 here 에 관련된 정보가 두개 입력된 상태라고 볼 수 있다.
 				if (distance[here] < cost) {
