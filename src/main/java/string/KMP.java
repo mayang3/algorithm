@@ -79,7 +79,6 @@ public class KMP {
 					len = lps[len-1];
 					// Also, note that we do not increment "i" here.
 				} else { // if (len == 0)
-					lps[i] = len;
 					i++;
 				}
 			}
@@ -87,8 +86,8 @@ public class KMP {
 	}
 
 	public static void main(String[] args) {
-		String txt = "ABABDABACDABABCABAB";
-		String pat = "ABABCABAB";
+		String txt = "AABAACAABC";
+		String pat = "AABAAA";
 
 		kmpSearch(pat, txt);
 	}
