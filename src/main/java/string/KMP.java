@@ -2,94 +2,78 @@ package string;
 
 public class KMP {
 	/**
-	 *
-	 * @param pat 바늘
-	 * @param txt 짚더미
 	 */
-	static void kmpSearch(String pat, String txt) {
-		int M = pat.length();
+	static void kmpSearch(String txt, String pat) {
 		int N = txt.length();
+		int M = pat.length();
 
-		// create lps[] that will hold the longest
-		// prefix suffix values for pattern
-		int [] lps = new int[M];
-		int j = 0; // index for pat[]
+		int [] pi = computePIArray(pat);
 
-		// Preprocess the pattern (calculate lps[] array)
-		// lps[i] = pat[0..i] 까지의 문자열중 prefix = suffix  가 되는 최대 길이
-		// prefix = 0 부터 suffix = length-1 부터 항상 시작해야 한다.
-		// 이렇게 suffix 를 이용하는 이유는, 문자열 검색에서 전체 문자열이 매칭되었다고 해서 그 문자열이 걸러지는 것이 아니라,
-		// 매칭된 문자열의 부분 문자열이 다음 문자열의 부분집합이 될 수도 있기 때문이다.
-		computeLPSArray(pat, M, lps);
+		// 실제 pi 를 활용해서 문자열을 매칭하는 부분에는, 전체 문자열도 포함될 수 있어야 하기 때문에, i=0 부터 시작한다.
+		int i = 0;
+		int j = 0;
 
-		int i = 0; // index for txt[]
 		while (i < N) {
-			if (pat.charAt(j) == txt.charAt(i)) {
-				j++;
+			if (txt.charAt(i) == txt.charAt(j)) {
 				i++;
-			}
-
-			// M : 패턴의 길이 -> 패턴을 전부 다 찾은 경우...
-			if (j == M) {
-				System.out.println("Found Pattern at index " + (i-j));
-				j = lps[j-1]; // lps[j-1] 만큼 건너뛴다.
-			} else if (i < N && pat.charAt(j) != txt.charAt(i)) {
-				// 패턴을 다 찾지 못했고, 현재 찾고 있는 패턴의 문자가 일치하지 않는 경우,
-
-				// Do not match lps[0..lps[j-1]] characters,
-				// they will match anyway
-				if (j != 0) {
-					// j 에서 불일치가 발생했고, j-1 까지는 match 된 상태이기 때문에, lps array 를 볼때 j-1 은 일치될 수 있다는 가능성을 보고, j-1 을 참조한다.
-					j = lps[j-1]; // lps[j-1] 만큼 건너 뛴다.
-				} else {
-					i = i+1; //
-				}
-			}
-		}
-
-	}
-
-	/**
-	 *
-	 * @param pat
-	 * @param M 바늘의 길이. pattern.length
-	 * @param lps
-	 */
-	static void computeLPSArray(String pat, int M, int [] lps) {
-		// length of the previous longest prefix suffix
-		int len = 0;
-		int i = 1;
-		lps[0] = 0; // lps[0] is always 0
-
-		// the loop calculates lps[i] for i=1 to M-1
-		while (i < M) {
-			if (pat.charAt(i) == pat.charAt(len)) {
-				len++;
-				lps[i] = len;
+				j++;
+			} else if (j == 0) {
 				i++;
 			} else {
-				// (pat[i] != pat[len])
+				j = pi[j-1];
+			}
 
-				// this is tricky. Consider the example.
-				// AAACAAAA and i=7. The idea is similar to search step.
-				if (len != 0) {
-					// 현재 위치에서 불일치 한경우 현재 대응된 길이를 pi[len-1] 로 줄인다.
-					// -> 현재 위치에서 불일치 했기 때문에, 현재까지 최대 대응된 길이는 pi[len-1] 이다.
-					// -> 접두사와 접미사가 같기 때문에 무조건 앞에서부터 잘라서 보면 pi[0] ~ pi[len-1] 이 현재까지 대응된 최대 길이가 된다.
-					len = lps[len-1];
-					// Also, note that we do not increment "i" here.
-				} else { // if (len == 0)
-					i++;
-				}
+			// 패턴이 끝에 도달했다면 문자열을 찾은 것이다.
+			if (j == M) {
+				System.out.println("found pattern, i:" + (i -j));
+				// 이때, 다음 문자를 찾기위해 j 인덱스를 추가로 옮겨준다.
+				j = pi[j-1];
 			}
 		}
+	}
+
+	static  int [] computePIArray(String pat) {
+		int M = pat.length();
+
+		int [] pi = new int[M];
+		// pi 를 구하는 부분에서의 i 는 1부터 시작한다.
+		// 접두사, 접미사 배열을 구하는 특성상, 전체 문자열은 제외되기 때문이다.
+		int i = 1;
+		int len = 0;
+
+		// pattern 문자열을 탐색하여 얻는 결과이니만큼, 범위는 1~M 이 된다.
+		// 여기서 1은 KMP 에서 접두사이기도 하고, 접미사이기도 한 값을 구하는데 있어서 전체 문자열은 제외되기 때문이다.
+		// 예를 들어, AAA 에서 AAA 는 카운트되지 않는다. (A, AA) 만 카운트 된다.
+		while (i < M) {
+			if (pat.charAt(i) == pat.charAt(len)) {
+				// 현재문자열이 일치하는 경우, 일치하는 접두사의 길이를 증가시킨다.
+				len++;
+				// 현재까지 증가된 접두사의 길이가 pi 의 최대 길이가 된다.
+				pi[i++] = len;
+			} else if (len == 0) {
+				// 일치하지 않았는데 len == 0 인 경우라면, 아래 패턴의 문자는 맨 처음인데 위의 패턴 문자열이 대응되지 않았다는 뜻이므로,
+				// 위의 패턴 문자열을 증가시켜야 한다.
+				i++;
+			} else {
+				// 일치하지 않고, len != 0 인 경우이다.
+				// 이 부분이 KMP 에서 건너뛰는 핵심인데, 현재 len 은 불일치한 문자의 위치를 나타낸다.
+				// 그러므로 바로 이전의 문자까지가 최대한 일치한 길이를 나타내는 값이 저장되어있고, 인덱스로 보면 pi[len-1] 이다.
+				// 이때, 이 값을 다시 len 에 할당하는 것은 해당 길이만큼 건너뛰면, 0부터 시작하는 인덱스의 특성상, len 이 다음에 비교할 문자가 되기 때문이다.
+				// 예를 들어, AAAB 의 문자열이 B 에서 불일치가 발생했다고 하면, len=3인 상태이고, 바로 이전까지 매칭된 최대 매칭 문자열의 길이는
+				// pi[3-1] = 2 가 된다. 이것은 길이이며, len=2로 할당하게되면, 인덱스의 특성상 AA 문자열 길이(2) 만큼을 건너뛰고 다음 문자 A(인덱스:3) 에
+				// 매칭을 시도하게 된다.
+				len = pi[len-1];
+			}
+		}
+
+		return pi;
 	}
 
 	public static void main(String[] args) {
-		String txt = "AABAACAABC";
-		String pat = "AABAAA";
+		String txt = "AABAABAA";
+		String pat = "AAB";
 
-		kmpSearch(pat, txt);
+		kmpSearch(txt, pat);
 	}
 
 }
