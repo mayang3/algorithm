@@ -14,7 +14,7 @@ public class KMP {
 		int j = 0;
 
 		while (i < N) {
-			if (txt.charAt(i) == txt.charAt(j)) {
+			if (txt.charAt(i) == pat.charAt(j)) {
 				i++;
 				j++;
 			} else if (j == 0) {
@@ -35,6 +35,7 @@ public class KMP {
 	static  int [] computePIArray(String pat) {
 		int M = pat.length();
 
+		// pi[i] 는 0~i 위치까지의 문자열중에 최대 부분일치 길이가 된다.
 		int [] pi = new int[M];
 		// pi 를 구하는 부분에서의 i 는 1부터 시작한다.
 		// 접두사, 접미사 배열을 구하는 특성상, 전체 문자열은 제외되기 때문이다.
