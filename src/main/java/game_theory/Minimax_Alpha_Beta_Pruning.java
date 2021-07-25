@@ -22,10 +22,9 @@ public class Minimax_Alpha_Beta_Pruning {
                 best = Math.max(best, val);
                 alpha = Math.max(alpha, best);
 
-                if (best <= alpha) {
+                if (beta <= alpha) {
                     break;
                 }
-
             }
 
         } else {
