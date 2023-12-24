@@ -76,9 +76,16 @@ public class DijkstraAlgorithm {
 				// 현재 정점이 앞에서 이미 처리되서, 현재의 cost 보다 적은 값을 가지고 있는 경우
 				// 이미 pq 에 정점이 들어갔는데, 이후에 더 짧은 경로가 발견되는 경우가 있을 수 있다.
 				// 즉, 이 조건을 탄다는 것은 현재 here 에 관련된 정보가 두개 입력된 상태라고 볼 수 있다.
+
+				// 이 조건이 어떨때 들어갈 수 있냐하면...
+				// 어떠한 임의의 노드 u 에서 연결된 노드 v 를 최초 방문할때는 v 노드의 distance 값이 무한대이기 때문에
+				// 무조건 방문하여 PriorityQueue 에 넣게 된다. 이때, u->v 간 cost 가 매우크더라도 그 값이 PQ 에 들어가게 되며,
+				// 다른 경로에 의해 distance[v] 에 작은 값이 들어갔을 경우, 이 Node 는 무시해주어야 한다.
 				if (distance[here] < cost) {
 					continue;
 				}
+
+				
 
 				for (int i = 0; i < adj[here].size(); i++) {
 					Pair therePair = adj[here].get(i);
